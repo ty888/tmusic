@@ -2,10 +2,12 @@
   <div class="search">
     <span class="logo_img"><img src="../assets/logo.png"></span>
     <div class="search_box">
-      <input v-model='musickey' placeholder="输入歌曲信息">
-      <ul>
-        <li>十年</li>
-        <li>十年</li>
+      <input v-model.trim='musickey' debounce="5000" placeholder="输入歌曲信息">
+      <ul v-if="musickey !== ''">
+        <li v-for="item in musiclist">
+          <router-link :to="{name: 'player', params: {hash: item.hash, singername: item.singername}}">{{item.filename}}</router-link>
+        </li>
+        <li v-if="errMsg.length>0">{{errMsg}}</li>
       </ul>
     </div>
   </div>
@@ -16,15 +18,34 @@ import api from '../api.js'
 export default {
   data () {
     return {
+      errMsg: '',
       musickey: '',
-      musiclist: {}
+      musiclist: [],
+      isWait: false
     }
   },
   watch: {
     musickey () {
-      api.getMusicList(this.$http, this.musickey, 5, (state, data) => {
-        console.log(data)
-      })
+      if (this.musickey.length === 0 || this.isWait) {
+        return
+      }
+      this.isWait = true
+      setTimeout(() => {
+        this.isWait = false
+        api.getMusicList(this.$http, this.musickey, 1, (state, data) => {
+          if (state) {
+            if (data.status === 'success') {
+              this.musiclist = data.data.data
+              this.errMsg = []
+            } else {
+              this.musiclist = []
+              this.errMsg = data.msg
+            }
+          } else {
+            // 出错了
+          }
+        })
+      }, 300)
     }
   }
 }
@@ -56,6 +77,14 @@ export default {
       background-color: #fff;
       li{
         padding: 10px;
+        a{
+          color: #333;
+          display: block;
+        }
+        span{
+          font-size: 12px;
+          float: right;
+        }
         &:not(first-child){
           border-top: 1px solid #e5e5e5;
         }

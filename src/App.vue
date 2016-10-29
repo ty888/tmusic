@@ -15,11 +15,13 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  height: 100%;
 }
 body{
   background:#f5f5f5;
   font-size: 0.85rem;
   line-height: 1.5;
+  height: 100%;
 }
 *{
   box-sizing: border-box;
