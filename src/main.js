@@ -24,7 +24,7 @@ Vue.http.options.root = 'http://apis.baidu.com/geekery/music'
 Vue.http.options.emulateJSON = true
 
 // 引入 view 组件
-import { Search, Player } from './views'
+import { Search, Player, Index } from './views'
 const router = new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
   routes: [
@@ -34,11 +34,16 @@ const router = new VueRouter({
       component: Search
     },
     {
-      path: '/player/:hash',
+      path: '/player/:hash/:singername',
       name: 'player',
       component: Player
     },
-    { path: '*', redirect: '/search' }
+    {
+      path: '/index',
+      name: 'index',
+      component: Index
+    },
+    { path: '*', redirect: '/index' }
   ]
 })
 new Vue(Vue.util.extend({ router }, App)).$mount('#app')

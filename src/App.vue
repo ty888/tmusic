@@ -26,4 +26,33 @@ body{
 *{
   box-sizing: border-box;
 }
+// 图表字体
+ @font-face {font-family: "iconfont";
+  src: url('assets/fonts/iconfont.eot?t=1477804250542'); /* IE9*/
+  src: url('assets/fonts/iconfont.eot?t=1477804250542#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('assets/fonts/iconfont.woff?t=1477804250542') format('woff'), /* chrome, firefox */
+  url('assets/fonts/iconfont.ttf?t=1477804250542') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('assets/fonts/iconfont.svg?t=1477804250542#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pause:before { content: "\e604"; }
+
+.icon-caidan:before { content: "\e614"; }
+
+.icon-comiisxiazai:before { content: "\e65e"; }
+
+.icon-bigbofang:before { content: "\e64e"; }
+
+.icon-xiayishou:before { content: "\e64d"; }
+
+.icon-shangyishou:before { content: "\e64f"; }
+
 </style>
