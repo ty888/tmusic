@@ -11,7 +11,7 @@
 		  <mt-swipe-item class="slide3"></mt-swipe-item>
 		</mt-swipe>
 		<div class="hot_search">
-      <p>热门搜索</p>
+	    <p>热门搜索</p>
       <ul>
         <li>丑八怪</li>
       </ul>
@@ -20,6 +20,15 @@
 </template>
 
 <script>
+// export default {
+// 	data () {
+// 		return {
+// 			hotList: [
+// 				{content: 丑八怪, }
+// 			]
+// 		}
+// 	}
+// }
 </script>
 
 <style lang="less" scoped>
@@ -50,5 +59,27 @@
     .slide3 {
     	background-image: url('../assets/3.jpg');
     }
+		// 热门搜索
+		>.hot_search{
+			padding: 0 20px;
+			>p{
+				margin: 20px 0;
+				color: #666;
+			}
+			>ul{
+        li{
+          float: left;
+          padding: 4px 6px;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          cursor: pointer;
+          &:hover{
+            background-color: #ccc;
+          }
+        }
+      }
+		}
 	}
 </style>
