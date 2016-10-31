@@ -1,10 +1,15 @@
 <template>
-  <router-view></router-view>
+  <div class="app">
+    <router-view></router-view>
+    <PlayBox></PlayBox>
+  </div>
 </template>
 
 <script>
+import PlayBox from './components/PlayBox'
 export default {
   components: {
+    PlayBox
   }
 }
 </script>
@@ -22,6 +27,13 @@ body{
   font-size: 0.85rem;
   line-height: 1.5;
   height: 100%;
+}
+.app{
+  position: relative;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
 }
 *{
   box-sizing: border-box;
@@ -42,14 +54,15 @@ body{
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.icon-pause:before { content: "\e604"; }
+.icon-guanbi:before { content: "\e66b"; }
 
 .icon-caidan:before { content: "\e614"; }
 
 .icon-comiisxiazai:before { content: "\e65e"; }
 
-.icon-bigbofang:before { content: "\e64e"; }
+.icon-iconset0481:before { content: "\e768"; }
+
+.icon-iconset0482:before { content: "\e769"; }
 
 .icon-xiayishou:before { content: "\e64d"; }
 

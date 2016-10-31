@@ -7,7 +7,7 @@
       <div class="mask"></div>
       <div class="mask_img" :style="{'background-image': 'url('+singer.image+')'}"></div>
       <div class="player_info">
-        <div class="player_img">
+        <div class="player_img img_rotate" :class="{'rotate_pause': !isPlay}">
           <img :src="singer.image">
         </div>
       </div>
@@ -26,7 +26,7 @@
           <span class="player_Pattern"><i class="iconfont icon-caidan"></i></span>
           <div class="control_btn">
             <span class="prev"><i class="iconfont icon-shangyishou"></i></span>
-            <span class="play"><i class="iconfont icon-bigbofang"></i></span>
+            <span class="play" @click="play()"><i class="iconfont" :class="{ 'icon-iconset0482': isPlay, 'icon-iconset0481': !isPlay }"></i></span>
             <span class="next"><i class="iconfont icon-xiayishou"></i></span>
           </div>
           <span class="download_btn"><i class="iconfont icon-comiisxiazai"></i></span>
@@ -43,17 +43,31 @@ export default {
     return {
       msg: 1,
       playerInfo: {},
-      singer: {}
+      singer: {},
+      playAd: '',
+      audio: null,
+      isPlay: true
     }
   },
-  method: {
+  methods: {
+    play () {
+      if (this.isPlay) {
+        this.audio.pause()
+        this.isPlay = false
+      } else {
+        this.audio.play()
+        this.isPlay = true
+      }
+    }
   },
   mounted () {
     api.getMusicInfo(this.$http, this.$route.params.hash, (state, data) => {
       if (state) {
         if (data.status === 'success') {
           this.playerInfo = data.data
-          new window.Audio(this.playerInfo.url).play()
+          this.playAd = data.data.url
+          this.audio = new window.Audio(this.playAd)
+          this.audio.play()
         }
       } else {
       }
@@ -71,7 +85,13 @@ export default {
 <style lang="less" scoped>
 // 图片旋转类
 .img_rotate{
-  animation: img_rotate 4s linear infinite;
+  animation: img_rotate 7s linear infinite;
+  -moz-animation: img_rotate 7s linear infinite;
+  -webkit-animation: img_rotate 7s linear infinite;
+  -o-animation: img_rotate 7s linear infinite;
+}
+.rotate_pause{
+  animation-play-state: paused;
 }
 .player{
   position: absolute;
@@ -126,10 +146,6 @@ export default {
         border-radius: 100px;
         border: 30px solid #000;
         margin: 0 auto;
-        animation: img_rotate 7s linear infinite;
-        -moz-animation: img_rotate 7s linear infinite;
-        -webkit-animation: img_rotate 7s linear infinite;
-        -o-animation: img_rotate 7s linear infinite;
         img{
           height: 100%;
         }
