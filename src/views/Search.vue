@@ -15,7 +15,7 @@
       </div>
       <ul v-if="musickey !== ''">
         <li v-for="item in musiclist">
-          <router-link :to="{name: 'player', params: {hash: item.hash, singername: item.singername}}">{{item.filename}}</router-link>
+          <router-link :to="{name: 'player', params: {hash: item.hash, singername: item.singername, songname: item.songname}}">{{item.filename}}</router-link>
         </li>
         <li v-if="errMsg.length>0">{{errMsg}}</li>
       </ul>
@@ -63,6 +63,7 @@ export default {
   watch: {
     musickey () {
       if (this.musickey.length === 0 || this.isWait) {
+        this.musiclist = []
         return
       }
       this.isWait = true

@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <router-view></router-view>
-    <PlayBox></PlayBox>
+    <PlayBox :songInfo="songInfo" v-if="isShow"></PlayBox>
   </div>
 </template>
 
@@ -10,6 +10,29 @@ import PlayBox from './components/PlayBox'
 export default {
   components: {
     PlayBox
+  },
+  data () {
+    return {
+      isShow: true,
+      songInfo: {},
+      audio: null,
+      isPlay: true
+    }
+  },
+  methods: {
+    setSongInfo (songInfo) {
+      this.songInfo = songInfo
+      window.localStorage.songInfo = JSON.stringify(songInfo)
+    }
+  },
+  mounted () {
+    if (window.localStorage.songInfo !== undefined) {
+      this.songInfo = JSON.parse(window.localStorage.songInfo)
+      this.audio = new window.Audio(JSON.parse(window.localStorage.playerInfo).url)
+      this.audio.play()
+    } else {
+      this.isShow = false
+    }
   }
 }
 </script>

@@ -34,7 +34,7 @@ const router = new VueRouter({
       component: Search
     },
     {
-      path: '/player/:hash/:singername',
+      path: '/player/:hash/:singername/:songname',
       name: 'player',
       component: Player
     },
