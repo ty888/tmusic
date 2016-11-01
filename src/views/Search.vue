@@ -6,6 +6,7 @@
     <span class="logo_img"><img src="../assets/logo.png"></span>
     <div class="search_box">
       <input v-model.trim='musickey' placeholder="输入歌曲信息">
+      <i @click="clearContent" v-if="musickey !== ''" class="iconfont icon-guanbi"></i>
       <div class="hot_search">
         <p>热门搜索</p>
         <ul>
@@ -14,7 +15,7 @@
       </div>
       <ul v-if="musickey !== ''">
         <li v-for="item in musiclist">
-          <router-link :to="{name: 'player', params: {hash: item.hash, singername: item.singername}}">{{item.filename}}</router-link>
+          <router-link :to="{name: 'player', params: {hash: item.hash, singername: item.singername, songname: item.songname}}">{{item.filename}}</router-link>
         </li>
         <li v-if="errMsg.length>0">{{errMsg}}</li>
       </ul>
@@ -49,11 +50,20 @@ export default {
   methods: {
     addSong (data) {
       this.musickey = data
+    },
+    clearContent () {
+      this.musickey = ''
+    }
+  },
+  mounted () {
+    if (this.$route.params.songName !== undefined) {
+      this.musickey = this.$route.params.songName
     }
   },
   watch: {
     musickey () {
       if (this.musickey.length === 0 || this.isWait) {
+        this.musiclist = []
         return
       }
       this.isWait = true
@@ -113,6 +123,13 @@ export default {
       font-size: 14px;
       background-color: #fff;
       outline: none;
+    }
+    >i{
+      position: absolute;
+      right: 5px;
+      top: 0;
+      padding: 10px;
+      cursor: pointer;
     }
     >.hot_search{
       float: left;

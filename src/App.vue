@@ -1,10 +1,38 @@
 <template>
-  <router-view></router-view>
+  <div class="app">
+    <router-view></router-view>
+    <PlayBox :songInfo="songInfo" v-if="isShow"></PlayBox>
+  </div>
 </template>
 
 <script>
+import PlayBox from './components/PlayBox'
 export default {
   components: {
+    PlayBox
+  },
+  data () {
+    return {
+      isShow: true,
+      songInfo: {},
+      audio: null,
+      isPlay: true
+    }
+  },
+  methods: {
+    setSongInfo (songInfo) {
+      this.songInfo = songInfo
+      window.localStorage.songInfo = JSON.stringify(songInfo)
+    }
+  },
+  mounted () {
+    if (window.localStorage.songInfo !== undefined) {
+      this.songInfo = JSON.parse(window.localStorage.songInfo)
+      this.audio = new window.Audio(JSON.parse(window.localStorage.playerInfo).url)
+      this.audio.play()
+    } else {
+      this.isShow = false
+    }
   }
 }
 </script>
@@ -22,6 +50,13 @@ body{
   font-size: 0.85rem;
   line-height: 1.5;
   height: 100%;
+}
+.app{
+  position: relative;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
 }
 *{
   box-sizing: border-box;
@@ -42,14 +77,15 @@ body{
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.icon-pause:before { content: "\e604"; }
+.icon-guanbi:before { content: "\e66b"; }
 
 .icon-caidan:before { content: "\e614"; }
 
 .icon-comiisxiazai:before { content: "\e65e"; }
 
-.icon-bigbofang:before { content: "\e64e"; }
+.icon-iconset0481:before { content: "\e768"; }
+
+.icon-iconset0482:before { content: "\e769"; }
 
 .icon-xiayishou:before { content: "\e64d"; }
 

@@ -2,12 +2,15 @@
   <div class="player">
     <mt-header :title="playerInfo.fileName" class="header">
       <mt-button icon="back" slot="left"  @click.native="$router.back()">返回</mt-button>
+      <router-link to="/index" slot="right">
+  		    <mt-button>首页</mt-button>
+  	  </router-link>
     </mt-header>
     <div class="player_main">
       <div class="mask"></div>
       <div class="mask_img" :style="{'background-image': 'url('+singer.image+')'}"></div>
       <div class="player_info">
-        <div class="player_img">
+        <div class="player_img img_rotate" :class="{'rotate_pause': !$root.isPlay}">
           <img :src="singer.image">
         </div>
       </div>
@@ -26,7 +29,7 @@
           <span class="player_Pattern"><i class="iconfont icon-caidan"></i></span>
           <div class="control_btn">
             <span class="prev"><i class="iconfont icon-shangyishou"></i></span>
-            <span class="play"><i class="iconfont icon-bigbofang"></i></span>
+            <span class="play" @click="play()"><i class="iconfont" :class="{ 'icon-iconset0482': $root.isPlay, 'icon-iconset0481': !$root.isPlay }"></i></span>
             <span class="next"><i class="iconfont icon-xiayishou"></i></span>
           </div>
           <span class="download_btn"><i class="iconfont icon-comiisxiazai"></i></span>
@@ -46,14 +49,41 @@ export default {
       singer: {}
     }
   },
-  method: {
+  methods: {
+    play () {
+      if (this.$root.isPlay) {
+        this.$root.audio.pause()
+        this.$root.isPlay = false
+      } else {
+        this.$root.audio.play()
+        this.$root.isPlay = true
+      }
+    }
+  },
+  beforeDestroy () {
+    this.$root.isShow = true
   },
   mounted () {
+    this.$root.isShow = false
+    let lastSongInfo = JSON.parse(window.localStorage.songInfo)
+    if (lastSongInfo.hash === this.$route.params.hash) {
+      this.singer.image = lastSongInfo.picUrl
+      this.singer.singername = lastSongInfo.singer
+      this.playerInfo = JSON.parse(window.localStorage.playerInfo)
+      return
+    }
     api.getMusicInfo(this.$http, this.$route.params.hash, (state, data) => {
       if (state) {
         if (data.status === 'success') {
           this.playerInfo = data.data
-          new window.Audio(this.playerInfo.url).play()
+          window.localStorage.playerInfo = JSON.stringify(data.data)
+          if (this.$root.audio !== null) {
+            this.$root.audio.src = this.playerInfo.url
+            this.$root.audio.load()
+          } else {
+            this.$root.audio = new window.Audio(this.playerInfo.url)
+            this.$root.audio.play()
+          }
         }
       } else {
       }
@@ -62,6 +92,12 @@ export default {
       if (state) {
         if (data.status === 'success') {
           this.singer = data.data
+          this.$root.setSongInfo({
+            singer: this.singer.singername,
+            picUrl: this.singer.image,
+            song: this.$route.params.songname,
+            hash: this.$route.params.hash
+          })
         }
       }
     })
@@ -71,7 +107,13 @@ export default {
 <style lang="less" scoped>
 // 图片旋转类
 .img_rotate{
-  animation: img_rotate 4s linear infinite;
+  animation: img_rotate 7s linear infinite;
+  -moz-animation: img_rotate 7s linear infinite;
+  -webkit-animation: img_rotate 7s linear infinite;
+  -o-animation: img_rotate 7s linear infinite;
+}
+.rotate_pause{
+  animation-play-state: paused;
 }
 .player{
   position: absolute;
@@ -126,10 +168,6 @@ export default {
         border-radius: 100px;
         border: 30px solid #000;
         margin: 0 auto;
-        animation: img_rotate 7s linear infinite;
-        -moz-animation: img_rotate 7s linear infinite;
-        -webkit-animation: img_rotate 7s linear infinite;
-        -o-animation: img_rotate 7s linear infinite;
         img{
           height: 100%;
         }
