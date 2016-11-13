@@ -65,12 +65,14 @@ export default {
   },
   mounted () {
     this.$root.isShow = false
-    let lastSongInfo = JSON.parse(window.localStorage.songInfo)
-    if (lastSongInfo.hash === this.$route.params.hash) {
-      this.singer.image = lastSongInfo.picUrl
-      this.singer.singername = lastSongInfo.singer
-      this.playerInfo = JSON.parse(window.localStorage.playerInfo)
-      return
+    if (window.localStorage.songInfo !== undefined) {
+      let lastSongInfo = JSON.parse(window.localStorage.songInfo)
+      if (lastSongInfo.hash === this.$route.params.hash) {
+        this.singer.image = lastSongInfo.picUrl
+        this.singer.singername = lastSongInfo.singer
+        this.playerInfo = JSON.parse(window.localStorage.playerInfo)
+        return
+      }
     }
     api.getMusicInfo(this.$http, this.$route.params.hash, (state, data) => {
       if (state) {

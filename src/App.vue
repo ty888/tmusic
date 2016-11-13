@@ -62,7 +62,7 @@ body{
   box-sizing: border-box;
 }
 // 图表字体
- @font-face {font-family: "iconfont";
+@font-face {font-family: "iconfont";
   src: url('assets/fonts/iconfont.eot?t=1477804250542'); /* IE9*/
   src: url('assets/fonts/iconfont.eot?t=1477804250542#iefix') format('embedded-opentype'), /* IE6-IE8 */
   url('assets/fonts/iconfont.woff?t=1477804250542') format('woff'), /* chrome, firefox */
